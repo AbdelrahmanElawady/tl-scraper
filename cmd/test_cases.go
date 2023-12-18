@@ -38,11 +38,11 @@ var testCasesCmd = &cobra.Command{
 		}
 		suiteIDs, err := caller.GetSuites(cmd.Context(), projects, nil)
 		if err != nil {
-			log.Error().Err(err).Send()
+			log.Fatal().Err(err).Send()
 		}
 		suiteSectionIDs, err := caller.GetSuiteSections(cmd.Context(), suiteIDs, nil)
 		if err != nil {
-			log.Error().Err(err).Send()
+			log.Fatal().Err(err).Send()
 		}
 		casesPath := filepath.Join(outputDir, testCasesDir)
 
@@ -52,7 +52,7 @@ var testCasesCmd = &cobra.Command{
 		}
 		err = caller.GetTestCases(context.Background(), suiteSectionIDs, &casesPath)
 		if err != nil {
-			log.Error().Err(err).Send()
+			log.Fatal().Err(err).Send()
 		}
 	},
 }
