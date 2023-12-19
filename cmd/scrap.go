@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"errors"
+
+	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
 )
 
@@ -13,36 +16,39 @@ var scrapCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(scrapCmd)
 
-	scrapCmd.PersistentFlags().StringP("key", "k", "", "key used in api authentication")
-	scrapCmd.PersistentFlags().StringP("email", "e", "", "email used in api authentication")
-	scrapCmd.PersistentFlags().StringP("account-id", "a", "", "account id used in api authentication")
-	err := scrapCmd.MarkPersistentFlagRequired("key")
-	if err != nil {
-		panic(err)
-	}
-	err = scrapCmd.MarkPersistentFlagRequired("email")
-	if err != nil {
-		panic(err)
-	}
-	err = scrapCmd.MarkPersistentFlagRequired("account-id")
-	if err != nil {
-		panic(err)
-	}
+	scrapCmd.PersistentFlags().StringP("env", "e", ".env", "key-value file with the user credentials")
+
 	scrapCmd.PersistentFlags().StringP("output-dir", "o", "", "directory to dump api results in")
 }
 
 func getUserData(cmd *cobra.Command) (key, email, accountID string, err error) {
-	key, err = cmd.Flags().GetString("key")
+	var env string
+	env, err = cmd.Flags().GetString("env")
 	if err != nil {
 		return
 	}
-	email, err = cmd.Flags().GetString("email")
+
+	config, err := godotenv.Read(env)
 	if err != nil {
 		return
 	}
-	accountID, err = cmd.Flags().GetString("account-id")
-	if err != nil {
+	if value, ok := config["key"]; !ok || value == "" {
+		err = errors.New("missing 'key' field")
 		return
+	} else {
+		key = value
+	}
+	if value, ok := config["email"]; !ok || value == "" {
+		err = errors.New("missing 'email' field")
+		return
+	} else {
+		email = value
+	}
+	if value, ok := config["accountID"]; !ok || value == "" {
+		err = errors.New("missing 'accountID' field")
+		return
+	} else {
+		accountID = value
 	}
 	return
 }
