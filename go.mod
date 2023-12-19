@@ -1,4 +1,4 @@
-module github.com/threefoldtech/tl-scrapper
+module github.com/AbdelrahmanElawady/tl-scraper
 
 go 1.21.0
 

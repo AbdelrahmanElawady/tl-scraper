@@ -5,9 +5,9 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/AbdelrahmanElawady/tl-scraper/endpoints"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/threefoldtech/tl-scrapper/endpoints"
 )
 
 // allCmd represents the all command

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/threefoldtech/tl-scrapper/cmd"
+import "github.com/AbdelrahmanElawady/tl-scraper/cmd"
 
 func main() {
 	cmd.Execute()
